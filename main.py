@@ -61,7 +61,10 @@ def main() -> None:
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, messages))
 
     # Run the bot until the user presses Ctrl-C
-    application.run_polling()
+    # application.run_polling()
+    
+    
+    application.bot.set_webhook("https://oluhenia-translate.onrender.com/"+TOKEN)
     
     # application.bot.set_webhook(listen="0.0.0.0",
     #     port=PORT,
