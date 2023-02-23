@@ -35,7 +35,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Send a message when the command /help is issued."""
-    await update.message.reply_text("He lp!")
+    await update.message.reply_text("Help!")
 
 from translate import *
 
@@ -43,19 +43,9 @@ async def messages(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Echo the user message."""
     text = update.message.text
     result = translate(text)
-    # result = ""
-    # for word in text.split():
-    # wordt = word
-    # if word.lower() in words:
-    # wordt = words[word.lower()]
-    # elif word.lower() in translates:
-    # wordt = translates[word.lower()]
-    # if iscapital(word):
-    # wordt = wordt.capitalize()
-    # result += " " + wordt
     await update.message.reply_text(result)
 
-TOKEN = "6072135388:AAElf063KT8NkvaVPcXD0-IAHU3b6YK50N0"
+TOKEN = "6072135388:AAEL7V_6TMxn-gDofGFQvpEzb8m6xeHg-is"
 PORT = int(os.environ.get('PORT', '8443'))
 
 def main() -> None:
@@ -73,9 +63,9 @@ def main() -> None:
     # Run the bot until the user presses Ctrl-C
     application.run_polling()
     
-    application.bot.set_webhook(listen="0.0.0.0",
-        port=PORT,
-        url_path=TOKEN, url="https://oluhenia-translate.onrender.com")
+    # application.bot.set_webhook(listen="0.0.0.0",
+    #     port=PORT,
+    #     url_path=TOKEN, url="https://oluhenia-translate.onrender.com")
     # application.bot.idle()
 
 
