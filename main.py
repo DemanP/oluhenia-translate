@@ -45,7 +45,7 @@ async def messages(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     result = translate(text)
     await update.message.reply_text(result)
 
-TOKEN = "6072135388:AAEL7V_6TMxn-gDofGFQvpEzb8m6xeHg-is"
+TOKEN = "6072135388:AAE2YOduxp_PVixfwzRdCeBvFW1R7dLmJ0c"
 PORT = int(os.environ.get('PORT', '8443'))
 
 def main() -> None:
@@ -64,11 +64,11 @@ def main() -> None:
     # application.run_polling()
     
     
-    application.bot.set_webhook("https://oluhenia-translate.onrender.com/"+TOKEN)
+    # application.bot.set_webhook("https://oluhenia-translate.onrender.com/"+TOKEN)
     
-    # application.bot.set_webhook(listen="0.0.0.0",
-    #     port=PORT,
-    #     url_path=TOKEN, url="https://oluhenia-translate.onrender.com")
+    application.run_webhook(listen="0.0.0.0",
+        port=PORT,
+        url_path=TOKEN, webhook_url="https://oluhenia-translate.onrender.com")
     # application.bot.idle()
 
 
