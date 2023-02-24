@@ -1,3 +1,2 @@
-python-telegram-bot==20.1
-pytelegrambotapi==4.7.1
+python-telegram-bot==13.14
 flask==2.2.2
