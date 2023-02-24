@@ -1,86 +1,95 @@
-# import logging, os
-# from telegram import __version__ as TG_VER
+import logging, os
+from telegram import __version__ as TG_VER
 
-# try:
-#     from telegram import __version_info__
-# except ImportError:
-#     __version_info__ = (0, 0, 0, 0, 0) # type: ignore[assignment]
+try:
+    from telegram import __version_info__
+except ImportError:
+    __version_info__ = (0, 0, 0, 0, 0) # type: ignore[assignment]
 
-# if __version_info__ < (20, 0, 0, "alpha", 1):
-#     raise RuntimeError(
-#     f"This example is not compatible with your current PTB version {TG_VER}. To view the "
-#     f"{TG_VER} version of this example, "
-#     f"visit https://docs.python-telegram-bot.org/en/v{TG_VER}/examples.html"
-#     )
-# from telegram import ForceReply, Update
-# from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters
+if __version_info__ < (20, 0, 0, "alpha", 1):
+    raise RuntimeError(
+    f"This example is not compatible with your current PTB version {TG_VER}. To view the "
+    f"{TG_VER} version of this example, "
+    f"visit https://docs.python-telegram-bot.org/en/v{TG_VER}/examples.html"
+    )
+from telegram import ForceReply, Update
+from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters
 
-# # Enable logging
-# logging.basicConfig(
-# format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
-# )
-# logger = logging.getLogger(__name__)
-
-
-# # Define a few command handlers. These usually take the two arguments update and
-# # context.
-# async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-#     """Send a message when the command /start is issued."""
-#     user = update.effective_user
-#     await update.message.reply_html(
-#     f"Hau {user.mention_html()}!\nНапиши мені речення на українській і я його перекладу на олутонк(або навпаки, з олутонку на українську)",
-#     # reply_markup=ForceReply(selective=True),
-#     )
+# Enable logging
+logging.basicConfig(
+format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
+)
+logger = logging.getLogger(__name__)
 
 
-# async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-#     """Send a message when the command /help is issued."""
-#     await update.message.reply_text("Help!")
+# Define a few command handlers. These usually take the two arguments update and
+# context.
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Send a message when the command /start is issued."""
+    user = update.effective_user
+    await update.message.reply_html(
+    f"Hau {user.mention_html()}!\nНапиши мені речення на українській і я його перекладу на олутонк(або навпаки, з олутонку на українську)",
+    # reply_markup=ForceReply(selective=True),
+    )
 
-# from translate import *
 
-# async def messages(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-#     """Echo the user message."""
-#     text = update.message.text
-#     result = translate(text)
-#     await update.message.reply_text(result)
+async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Send a message when the command /help is issued."""
+    await update.message.reply_text("Help!")
 
-# TOKEN = "6072135388:AAE2YOduxp_PVixfwzRdCeBvFW1R7dLmJ0c"
-# PORT = int(os.environ.get('PORT', '8443'))
+from translate import *
 
-# def main() -> None:
-#     """Start the bot."""
-#     # Create the Application and pass it your bot's token.
-#     application = Application.builder().token(TOKEN).build()
+async def messages(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Echo the user message."""
+    text = update.message.text
+    result = translate(text)
+    await update.message.reply_text(result)
 
-#     # on different commands - answer in Telegram
-#     application.add_handler(CommandHandler("start", start))
-#     application.add_handler(CommandHandler("help", help_command))
+TOKEN = "6072135388:AAE2YOduxp_PVixfwzRdCeBvFW1R7dLmJ0c"
+PORT = int(os.environ.get('PORT', '8443'))
 
-#     # on non command i.e message - echo the message on Telegram
-#     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, messages))
+def main() -> None:
+    """Start the bot."""
+    # Create the Application and pass it your bot's token.
+    application = Application.builder().token(TOKEN).build()
 
-#     # Run the bot until the user presses Ctrl-C
-#     while 1:
-#         try:
-#             application.run_polling()
-#         except: pass
+    # on different commands - answer in Telegram
+    application.add_handler(CommandHandler("start", start))
+    application.add_handler(CommandHandler("help", help_command))
+
+    # on non command i.e message - echo the message on Telegram
+    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, messages))
+
+    # Run the bot until the user presses Ctrl-C
+    # while 1:
+    #     try:
+    #         application.run_polling()
+    #     except: pass
     
+    port = int(os.environ.get('PORT', '8443'))
+    print(port)
     
-#     # application.bot.set_webhook("https://oluhenia-translate.onrender.com/"+TOKEN)
+    application.run_webhook(
+        listen='127.0.0.1',
+        port=port,
+        url_path='',
+        webhook_url="https://oluhenia-translate.onrender.com/"+TOKEN,
+    )
     
-#     # application.bot.setWebhook("https://oluhenia-translate.onrender.com/"+TOKEN)
+    # application.bot.set_webhook("https://oluhenia-translate.onrender.com/"+TOKEN)
     
-#     # application.updater.start_webhook(listen="0.0.0.0",
-#     #     port=PORT,
-#     #     url_path=TOKEN)
-#     # application.updater.bot.setWebhook("https://oluhenia-translate.onrender.com/"+TOKEN)
-#     # application.updater.idle()
-#     # application.bot.idle()
+    # application.bot.setWebhook("https://oluhenia-translate.onrender.com/"+TOKEN)
+    
+    # application.updater.start_webhook(listen="0.0.0.0",
+    #     port=PORT,
+    #     url_path=TOKEN)
+    # application.updater.bot.setWebhook("https://oluhenia-translate.onrender.com/"+TOKEN)
+    # application.updater.idle()
+    # application.bot.idle()
 
 
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()
 
 
 
@@ -169,44 +178,44 @@
 
 
 
-from telegram.ext.updater import Updater
-from telegram.update import Update
-from telegram.ext.callbackcontext import CallbackContext
-from telegram.ext.commandhandler import CommandHandler
-from telegram.ext.messagehandler import MessageHandler
-from telegram.ext.callbackqueryhandler import CallbackQueryHandler
-from telegram.ext.filters import Filters
-from telegram import KeyboardButton, ReplyKeyboardMarkup, InlineKeyboardButton, InlineKeyboardMarkup
+# from telegram.ext.updater import Updater
+# from telegram.update import Update
+# from telegram.ext.callbackcontext import CallbackContext
+# from telegram.ext.commandhandler import CommandHandler
+# from telegram.ext.messagehandler import MessageHandler
+# from telegram.ext.callbackqueryhandler import CallbackQueryHandler
+# from telegram.ext.filters import Filters
+# from telegram import KeyboardButton, ReplyKeyboardMarkup, InlineKeyboardButton, InlineKeyboardMarkup
 
-import os
-from translate import *
+# import os
+# from translate import *
 
-TOKEN = "6072135388:AAE2YOduxp_PVixfwzRdCeBvFW1R7dLmJ0c"
-PORT = int(os.environ.get('PORT', '8443'))
-updater = Updater(TOKEN)
+# TOKEN = "6072135388:AAE2YOduxp_PVixfwzRdCeBvFW1R7dLmJ0c"
+# PORT = int(os.environ.get('PORT', '8443'))
+# updater = Updater(TOKEN)
 
-def start(update: Update, context: CallbackContext):
-    update.message.reply_text(f"Hau {message.from_user.first_name} {message.from_user.last_name}!\nНапиши мені речення на українській і я його перекладу на олутонк(або навпаки, з олутонку на українську)")
+# def start(update: Update, context: CallbackContext):
+#     update.message.reply_text(f"Hau {message.from_user.first_name} {message.from_user.last_name}!\nНапиши мені речення на українській і я його перекладу на олутонк(або навпаки, з олутонку на українську)")
 
-def message_reply(update: Update, context: CallbackContext):
-    print(update.message)
-    update.message.reply_text(translate(update.message.text))
+# def message_reply(update: Update, context: CallbackContext):
+#     print(update.message)
+#     update.message.reply_text(translate(update.message.text))
 
-def callback(update: Update, context):
-    data = update.callback_query.data
+# def callback(update: Update, context):
+#     data = update.callback_query.data
 
-updater.dispatcher.add_handler(CommandHandler('start', start, pass_job_queue=True))
-updater.dispatcher.add_handler(MessageHandler(Filters.text, message_reply))
-updater.dispatcher.add_handler(CallbackQueryHandler(callback))
+# updater.dispatcher.add_handler(CommandHandler('start', start, pass_job_queue=True))
+# updater.dispatcher.add_handler(MessageHandler(Filters.text, message_reply))
+# updater.dispatcher.add_handler(CallbackQueryHandler(callback))
 
-def callback_second(context: CallbackContext):
-    # print("10 seconds")
-    a = 0
-j = updater.job_queue
-job_minute = j.run_repeating(callback_second, interval=10, first=1)
+# def callback_second(context: CallbackContext):
+#     # print("10 seconds")
+#     a = 0
+# j = updater.job_queue
+# job_minute = j.run_repeating(callback_second, interval=10, first=1)
 
-updater.start_webhook(listen="0.0.0.0",
-                      port=PORT,
-                      url_path=TOKEN,
-                      webhook_url = "https://oluhenia-translate.onrender.com/" + TOKEN)
-updater.idle()
+# updater.start_webhook(listen="0.0.0.0",
+#                       port=PORT,
+#                       url_path=TOKEN,
+#                       webhook_url = "https://oluhenia-translate.onrender.com/" + TOKEN)
+# updater.idle()
