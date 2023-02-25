@@ -23,38 +23,41 @@ def split_array(string, arr):
             words.append(word)
     return words, seps
 
-words = {}
-translates = {}
+olutonq = {}
+ukrainian = {}
 
 words_str = open("words.txt", "r", encoding="utf-8").read()
 
 for line in words_str.split("\n"):
     word, translate = line.split(" - ")
-    words[word.lower()] = translate.lower().split("/")
+    olutonq[word.lower()] = translate.lower().split("/")
     for tr in translate.lower().split("/"):
-        translates[tr] = word.lower()
+        ukrainian[tr] = word.lower()
 
-from pprint import pprint
+# from pprint import pprint
 
-pprint(words)
-#pprint(words, sort_dicts = False)
-print()
-print(len(words))
-print()
+# pprint(olutonq)
+# #pprint(olutonq, sort_dicts = False)
+# print()
+# print(len(olutonq))
+# print()
 
 def translate(text):
     results = []
 
     text_words, seps = split_array(text, [" ", ",", ".", "!", "?", ":", ";", "+", "-", "*", "/", "\\", "#", "@", "_", "(", ")", "$", "&", "[", "]", "{", "}", "%", "|", "`", "~", "•", "√", "π", "÷", "×", "¶", "∆", "£", "€", "¢", "^", "°", "=", "©", "®", "™", "℅", "'", '"', "<", ">"])
+    if text.lower() in olutonq:
+        wordt = olutonq[text.lower()]
+        return " / ".join(wordt)   
     while len(text_words):
         for i in range(len(text_words), 0, -1):
             c = join(text_words[:i], seps[:i-1], True)
             wordt = c.lower()
-            if wordt in words:
-                wordt = words[wordt][0]
+            if wordt in olutonq:
+                wordt = olutonq[wordt][0]
                 break
-            elif wordt in translates:
-                wordt = translates[wordt]
+            elif wordt in ukrainian:
+                wordt = ukrainian[wordt]
                 break
 
         if c.isupper():
@@ -70,6 +73,4 @@ def translate(text):
 
 if __name__ == "__main__":
     while 1:
-        text = input(" ")
-        result = translate(text)
-        print(result)
+        print(translate(input(" ")))
