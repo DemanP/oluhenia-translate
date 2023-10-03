@@ -73,7 +73,7 @@ def main() -> None:
         listen='127.0.0.1',
         port=port,
         url_path='',
-        webhook_url="https://oluhenia-translate.onrender.com/"+TOKEN,
+        webhook_url="https://oluhenia-translate.vercel.app/"+TOKEN,
     )
     
     # application.bot.set_webhook("https://oluhenia-translate.onrender.com/"+TOKEN)
