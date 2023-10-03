@@ -3,7 +3,7 @@
   "builds": [
       {
           "src": "*.py",
-          "use": "@demanp/oluhenia-translate"
+          "use": "@vercel/python"
       }
   ],
   "routes": [
